@@ -33,6 +33,7 @@ fs.readdirSync(outDir).forEach((f) => {
 });
 
 const lines = [];
+const csvLines = ['姓名,专属链接'];
 GUESTS.forEach((name, i) => {
   const slug = `guest-${String(i + 1).padStart(3, '0')}`;
   const title = `${name} · ${GROOM} & ${BRIDE}的婚礼邀请函`;
@@ -56,9 +57,12 @@ GUESTS.forEach((name, i) => {
 `;
   fs.writeFileSync(path.join(outDir, `${slug}.html`), html, 'utf8');
   lines.push(`${name}\t${SITE}/guest/${slug}.html`);
+  csvLines.push(`${name},${SITE}/guest/${slug}.html`);
 });
 
 fs.writeFileSync(path.join(outDir, '名单对照.txt'), lines.join('\n'), 'utf8');
+// CSV 带 UTF-8 BOM,Excel 直接打开不乱码
+fs.writeFileSync(path.join(outDir, '名单对照.csv'), '﻿' + csvLines.join('\r\n'), 'utf8');
 console.log(`已生成 ${GUESTS.length} 个专属页面`);
-console.log('对照表:guest/名单对照.txt');
+console.log('对照表:guest/名单对照.csv(Excel 打开)');
 console.log(lines.join('\n'));
