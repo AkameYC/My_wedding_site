@@ -12,7 +12,7 @@ e:\wedding
 ├── images/
 │   ├── wedding/        婚纱照 w01.jpg ~ w58.jpg(已压缩)
 │   └── hotel/          酒店照片 hotel-1.jpg / hotel-2.jpg
-└── music/              背景音乐(bgm.mp3,见目录内说明.txt)
+└── music/              背景音乐(bgm.mp3,见目录内 README.txt)
 ```
 
 ## 修改内容(不用懂代码)

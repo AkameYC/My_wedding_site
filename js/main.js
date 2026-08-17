@@ -108,7 +108,7 @@ const CONFIG = {
     { title: '得成比目何辞死,<br>愿作鸳鸯不羡仙', dir: 'images/wedding/4/', photos: ['w29.jpg', 'w30.jpg', 'w31.jpg', 'w32.jpg', 'w33.jpg', 'w34.jpg', 'w35.jpg', 'w36.jpg', 'w37.jpg', 'w38.jpg', 'w39.jpg'] },
     { title: '在天愿作比翼鸟,<br>在地愿为连理枝', dir: 'images/wedding/5/', photos: ['w40.jpg', 'w41.jpg', 'w42.jpg', 'w43.jpg', 'w44.jpg', 'w45.jpg', 'w46.jpg', 'w47.jpg', 'w48.jpg', 'w49.jpg', 'w50.jpg', 'w51.jpg', 'w52.jpg', 'w53.jpg', 'w54.jpg', 'w55.jpg', 'w56.jpg', 'w57.jpg', 'w58.jpg'] },
   ],
-  // 背景音乐:将文件放到 music/bgm.mp3 即可生效(见 music/说明.txt)
+  // 背景音乐:将文件放到 music/bgm.mp3 即可生效(见 music/README.txt)
   musicSrc: 'music/bgm.mp3',
 };
 /* ============================================================
@@ -426,7 +426,7 @@ let openLightbox; // 由下方放大层模块赋值
   audio.addEventListener('error', () => {
     btn.hidden = true;
     console.warn('[婚礼请柬] 未找到背景音乐文件 ' + CONFIG.musicSrc +
-      ',请将音乐文件命名为 bgm.mp3 放入 music/ 目录(见 music/说明.txt)。');
+      ',请将音乐文件命名为 bgm.mp3 放入 music/ 目录(见 music/README.txt)。');
   });
 
   let playing = false;
