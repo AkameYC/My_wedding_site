@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>王宇晨 &amp; 周婷 · 婚礼邀请函</title>
+<meta name="description" content="诚挚邀请您参加王宇晨与周婷的婚礼 · 2026年10月10日 18:18 · 嘉兴隆聚时令海鲜金悦店">
+<meta property="og:title" content="王宇晨 &amp; 周婷 · 婚礼邀请函">
+<meta property="og:description" content="2026年10月10日 18:18 · 嘉兴市南湖区中山东路875号 隆聚时令海鲜金悦店">
+<meta property="og:image" content="images/wedding/w01.jpg">
+<meta property="og:type" content="website">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<!-- 背景音乐开关(音乐文件就绪后自动显示) -->
+<button id="music-btn" class="music-btn" aria-label="背景音乐开关" hidden>
+  <span class="music-icon">♪</span>
+</button>
+
+<!-- 顶部锚点导航 -->
+<nav id="topnav" class="topnav">
+  <a href="#hero" class="active">首页</a>
+  <a href="#schedule">流程</a>
+  <a href="#hotel">位置</a>
+  <a href="#guide">指南</a>
+  <a href="#travel">周边</a>
+  <a href="#wishes">祝福</a>
+  <a href="#photos">相册</a>
+</nav>
+
+<!-- 花瓣飘落容器 -->
+<div id="petals" class="petals" aria-hidden="true"></div>
+
+<main>
+  <!-- ============ 首页(参考图形式:照片背景 + 子项目入口) ============ -->
+  <section id="hero" class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-shade"></div>
+    <div class="hero-inner">
+      <p class="hero-en">WEDDING INVITATION</p>
+      <h1 class="hero-title"><span id="h-groom">王宇晨</span> <span class="amp">&amp;</span> <span id="h-bride">周婷</span></h1>
+      <p class="hero-sub">诚挚邀请您见证我们的幸福时刻</p>
+      <p class="hero-date">2026年10月10日 · 星期六 · 18:18</p>
+      <div id="countdown" class="countdown" aria-label="婚礼倒计时">
+        <div class="cd-item"><span id="cd-days">--</span><em>天</em></div>
+        <div class="cd-item"><span id="cd-hours">--</span><em>时</em></div>
+        <div class="cd-item"><span id="cd-mins">--</span><em>分</em></div>
+        <div class="cd-item"><span id="cd-secs">--</span><em>秒</em></div>
+      </div>
+      <nav class="hero-menu" aria-label="子项目入口">
+        <a class="hero-entry" href="#schedule">
+          <span class="he-icon">🕊</span><span class="he-title">婚礼流程</span><span class="he-arrow">›</span>
+        </a>
+        <a class="hero-entry" href="#hotel">
+          <span class="he-icon">📍</span><span class="he-title">酒店位置</span><span class="he-arrow">›</span>
+        </a>
+        <a class="hero-entry" href="#guide">
+          <span class="he-icon">📋</span><span class="he-title">婚礼指南</span><span class="he-arrow">›</span>
+        </a>
+        <a class="hero-entry" href="#travel">
+          <span class="he-icon">🗺</span><span class="he-title">周边旅游</span><span class="he-arrow">›</span>
+        </a>
+        <a class="hero-entry" href="#wishes">
+          <span class="he-icon">✉️</span><span class="he-title">宾客祝福</span><span class="he-arrow">›</span>
+        </a>
+        <a class="hero-entry" href="#photos">
+          <span class="he-icon">📷</span><span class="he-title">婚纱照</span><span class="he-arrow">›</span>
+        </a>
+      </nav>
+      <p class="hero-venue">嘉兴 · 隆聚时令海鲜金悦店</p>
+    </div>
+  </section>
+
+  <!-- ============ 婚礼流程 ============ -->
+  <section id="schedule" class="section">
+    <header class="sec-head">
+      <p class="sec-en">WEDDING TIMELINE</p>
+      <h2 class="sec-title">婚礼流程</h2>
+      <span class="sec-deco" aria-hidden="true"></span>
+    </header>
+    <ol id="timeline" class="timeline"></ol>
+  </section>
+
+  <!-- ============ 酒店位置 ============ -->
+  <section id="hotel" class="section">
+    <header class="sec-head">
+      <p class="sec-en">LOCATION</p>
+      <h2 class="sec-title">婚礼场地</h2>
+      <span class="sec-deco" aria-hidden="true"></span>
+    </header>
+    <div class="hotel-photos">
+      <img src="images/hotel/hotel-1.jpg" alt="酒店环境" loading="lazy">
+      <img src="images/hotel/hotel-2.jpg" alt="酒店环境" loading="lazy">
+    </div>
+    <h3 class="hotel-name">隆聚时令海鲜 · 金悦店</h3>
+    <p class="hotel-addr">浙江省嘉兴市南湖区中山东路875号</p>
+    <div class="hotel-btns">
+      <a class="nav-btn gaode" href="https://uri.amap.com/search?keyword=隆聚时令海鲜金悦店" target="_blank" rel="noopener">高德地图导航</a>
+      <a class="nav-btn baidu" href="https://api.map.baidu.com/uri?address=隆聚时令海鲜金悦店" target="_blank" rel="noopener">百度地图导航</a>
+    </div>
+    <p class="sec-tip">点击按钮自动唤起地图 App,未安装将打开网页版</p>
+  </section>
+
+  <!-- ============ 婚礼指南:出席登记 / 座位查询 / 菜单 ============ -->
+  <section id="guide" class="section">
+    <header class="sec-head">
+      <p class="sec-en">WEDDING GUIDE</p>
+      <h2 class="sec-title">婚礼指南</h2>
+      <span class="sec-deco" aria-hidden="true"></span>
+    </header>
+
+    <!-- 出席登记 -->
+    <div class="guide-block">
+      <h3 class="guide-title">✍️ 出席登记</h3>
+      <p class="guide-desc">为了提前为您安排席位,请点击下方按钮登记出席信息</p>
+      <a id="rsvp-btn" class="rsvp-btn" href="#" target="_blank" rel="noopener">填写出席登记</a>
+      <p class="guide-note">* 登记表由腾讯文档收集,无需下载,微信内直接填写</p>
+    </div>
+
+    <!-- 座位查询 -->
+    <div class="guide-block">
+      <h3 class="guide-title">💺 座位查询</h3>
+      <p class="guide-desc">婚礼当天输入您的姓名,查询座位桌号</p>
+      <div class="seat-search">
+        <input id="seat-input" type="text" maxlength="12" placeholder="请输入姓名" autocomplete="off">
+        <button id="seat-btn" type="button">查询</button>
+      </div>
+      <div id="seat-result" class="seat-result" hidden></div>
+    </div>
+
+    <!-- 婚礼菜单 -->
+    <div class="guide-block">
+      <h3 class="guide-title">🍽️ 婚礼菜单</h3>
+      <p class="guide-desc">精选佳肴,静候品尝</p>
+      <div id="menu-list" class="menu-list"></div>
+    </div>
+  </section>
+
+  <!-- ============ 周边旅游 ============ -->
+  <section id="travel" class="section">
+    <header class="sec-head">
+      <p class="sec-en">AROUND THE CITY</p>
+      <h2 class="sec-title">嘉兴周边游</h2>
+      <span class="sec-deco" aria-hidden="true"></span>
+    </header>
+    <p class="travel-lead">婚礼前后,不妨在嘉兴走一走</p>
+    <div id="travel-list" class="travel-list"></div>
+  </section>
+
+  <!-- ============ 宾客祝福 ============ -->
+  <section id="wishes" class="section">
+    <header class="sec-head">
+      <p class="sec-en">BEST WISHES</p>
+      <h2 class="sec-title">宾客祝福</h2>
+      <span class="sec-deco" aria-hidden="true"></span>
+    </header>
+    <form id="wish-form" class="wish-form">
+      <input id="wish-name" type="text" maxlength="12" placeholder="您的称呼(可留空)" autocomplete="off">
+      <textarea id="wish-text" rows="3" maxlength="200" placeholder="写下您的祝福…" required></textarea>
+      <button type="submit" class="wish-submit">送上祝福</button>
+    </form>
+    <ul id="wish-list" class="wish-list"></ul>
+  </section>
+
+  <!-- ============ 婚纱照(最后) ============ -->
+  <section id="photos" class="section">
+    <header class="sec-head">
+      <p class="sec-en">OUR GALLERY</p>
+      <h2 class="sec-title">我们的婚纱照</h2>
+      <span class="sec-deco" aria-hidden="true"></span>
+    </header>
+    <div id="album-groups" class="album-groups"></div>
+    <p class="sec-tip">点击照片可放大查看</p>
+  </section>
+
+  <footer class="footer">
+    <p class="footer-names">王宇晨 &amp; 周婷</p>
+    <p class="footer-date">2026 · 10 · 10</p>
+    <p class="footer-line">期待您的到来</p>
+    <p class="footer-back"><a href="#hero">‹ 返回首页</a></p>
+  </footer>
+</main>
+
+<!-- ============ 信封开场 ============ -->
+<div id="envelope-scene" class="env-scene" hidden>
+  <div id="envelope" class="env">
+    <div class="env-body"></div>
+    <div class="env-front"></div>
+    <div class="env-letter">
+      <div class="env-letter-inner">
+        <p class="el-names"><span id="el-groom">王宇晨</span> &amp; <span id="el-bride">周婷</span></p>
+        <p class="el-date">2026 · 10 · 10</p>
+      </div>
+    </div>
+    <div class="env-flap"></div>
+    <div class="env-seal">♥</div>
+  </div>
+  <p class="env-hint">点击信封,开启邀请</p>
+</div>
+
+<!-- 展开的完整信纸 -->
+<div id="letter-card" class="letter-card" hidden>
+  <div class="letter-card-inner">
+    <span class="sec-deco" aria-hidden="true"></span>
+    <p class="lc-dear">尊敬的 <span id="lc-guest">亲朋好友</span>:</p>
+    <p class="lc-invite">诚邀您参加</p>
+    <p class="lc-names"><span id="lc-groom">王宇晨</span> <span class="amp">&amp;</span> <span id="lc-bride">周婷</span></p>
+    <p class="lc-invite">的婚礼</p>
+    <div class="lc-info">
+      <p class="lc-time">时间:2026年10月10日(星期六)18:18</p>
+      <p class="lc-addr">地点:浙江省嘉兴市南湖区中山东路875号</p>
+      <p class="lc-hotel">隆聚时令海鲜 · 金悦店</p>
+    </div>
+    <p class="lc-sign">期待您的到来</p>
+    <button id="lc-close" class="lc-close">收 起 信 纸</button>
+  </div>
+</div>
+
+<!-- 图片放大查看层 -->
+<div id="lightbox" class="lightbox" hidden>
+  <img id="lightbox-img" src="" alt="放大查看">
+  <button id="lightbox-close" class="lightbox-close" aria-label="关闭">×</button>
+  <button id="lightbox-prev" class="lightbox-arrow prev" aria-label="上一张">‹</button>
+  <button id="lightbox-next" class="lightbox-arrow next" aria-label="下一张">›</button>
+  <div id="lightbox-counter" class="lightbox-counter"></div>
+</div>
+
+<script src="js/main.js"></script>
+</body>
+</html>
