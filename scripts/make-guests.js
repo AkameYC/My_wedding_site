@@ -13,7 +13,7 @@ const path = require('path');
 
 const GROOM = '王宇晨';
 const BRIDE = '周婷';
-const SITE = 'https://akameyc.github.io'; // 部署地址,换了托管要改这里
+const SITE = 'https://akameyc.github.io/My_wedding_site'; // 部署地址,换了托管要改这里
 const GUESTS = [
   // ★ 宾客名单填这里(示例名单,确定后替换)
   '张三',
