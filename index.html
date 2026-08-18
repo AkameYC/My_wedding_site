@@ -18,17 +18,6 @@
   <span class="music-icon">♪</span>
 </button>
 
-<!-- 顶部锚点导航 -->
-<nav id="topnav" class="topnav">
-  <a href="#hero" class="active">首页</a>
-  <a href="#schedule">流程</a>
-  <a href="#hotel">位置</a>
-  <a href="#guide">指南</a>
-  <a href="#travel">周边</a>
-  <a href="#wishes">祝福</a>
-  <a href="#photos">相册</a>
-</nav>
-
 <!-- 花瓣飘落容器 -->
 <div id="petals" class="petals" aria-hidden="true"></div>
 
@@ -110,12 +99,37 @@
       <span class="sec-deco" aria-hidden="true"></span>
     </header>
 
+    <!-- 温馨提示 -->
+    <div class="guide-block">
+      <h3 class="guide-title">🌟 温馨提示</h3>
+      <ul class="tips-list">
+        <li>
+          <span class="tip-icon">🌤</span>
+          <span>当日天气:10月嘉兴秋高气爽,气温约 15~25°C,早晚较凉,建议携带一件薄外套</span>
+        </li>
+        <li>
+          <span class="tip-icon">👗</span>
+          <span>着装建议:莫奈花园主题婚礼,欢迎着柔和浅色系(米白、浅粉、灰绿、香槟)出席;女士建议裙装,男士衬衫或休闲西装,请将纯白色礼服留给新人</span>
+        </li>
+      </ul>
+    </div>
+
     <!-- 出席登记 -->
     <div class="guide-block">
       <h3 class="guide-title">✍️ 出席登记</h3>
-      <p class="guide-desc">为了提前为您安排席位,请点击下方按钮登记出席信息</p>
+      <p class="guide-desc">为了提前为您安排席位,请登记出席信息</p>
+      <!-- 云端模式:页内登记表单(云环境就绪后自动显示) -->
+      <form id="rsvp-form" class="rsvp-form" hidden>
+        <input id="rsvp-name" type="text" maxlength="12" placeholder="您的姓名 *" required autocomplete="off">
+        <input id="rsvp-count" type="number" min="1" max="10" placeholder="出席人数(选填)">
+        <input id="rsvp-phone" type="tel" maxlength="11" placeholder="手机号(选填)" autocomplete="off">
+        <textarea id="rsvp-note" rows="2" maxlength="100" placeholder="备注(忌口、随行人员等,选填)"></textarea>
+        <button type="submit" class="wish-submit">提交登记</button>
+      </form>
+      <p id="rsvp-done" class="rsvp-done" hidden>✓ 登记成功,期待您的到来!</p>
+      <!-- 未配置云端:回退为跳转腾讯文档收集表 -->
       <a id="rsvp-btn" class="rsvp-btn" href="#" target="_blank" rel="noopener">填写出席登记</a>
-      <p class="guide-note">* 登记表由腾讯文档收集,无需下载,微信内直接填写</p>
+      <p class="guide-note">* 信息仅新人可见;如需修改,重新填写即可覆盖</p>
     </div>
 
     <!-- 座位查询 -->
@@ -182,6 +196,17 @@
   </footer>
 </main>
 
+<!-- 底部 Tab 导航栏(类 App) -->
+<nav id="topnav" class="topnav">
+  <a href="#hero" class="active"><span class="tab-icon">🏠</span><span class="tab-label">首页</span></a>
+  <a href="#schedule"><span class="tab-icon">🕊</span><span class="tab-label">流程</span></a>
+  <a href="#hotel"><span class="tab-icon">📍</span><span class="tab-label">位置</span></a>
+  <a href="#guide"><span class="tab-icon">📋</span><span class="tab-label">指南</span></a>
+  <a href="#travel"><span class="tab-icon">🗺</span><span class="tab-label">周边</span></a>
+  <a href="#wishes"><span class="tab-icon">✉️</span><span class="tab-label">祝福</span></a>
+  <a href="#photos"><span class="tab-icon">📷</span><span class="tab-label">相册</span></a>
+</nav>
+
 <!-- ============ 信封开场 ============ -->
 <div id="envelope-scene" class="env-scene" hidden>
   <div id="envelope" class="env">
@@ -221,11 +246,14 @@
 <div id="lightbox" class="lightbox" hidden>
   <img id="lightbox-img" src="" alt="放大查看">
   <button id="lightbox-close" class="lightbox-close" aria-label="关闭">×</button>
+  <button id="lightbox-full" class="lightbox-full" aria-label="全屏">⛶</button>
   <button id="lightbox-prev" class="lightbox-arrow prev" aria-label="上一张">‹</button>
   <button id="lightbox-next" class="lightbox-arrow next" aria-label="下一张">›</button>
   <div id="lightbox-counter" class="lightbox-counter"></div>
 </div>
 
+<!-- 腾讯云开发 Web SDK(官方 CDN,国内直连;未配置云环境时页面自动降级,不依赖它) -->
+<script src="https://imgcache.qq.com/qcloud/cloudbase-js-sdk/1.7.0/cloudbase.full.js"></script>
 <script src="js/main.js"></script>
 </body>
 </html>

@@ -53,9 +53,10 @@ const CONFIG = {
       desc: '市区大型购物中心,餐饮、购物、影院一站式,逛街购物的首选。',
     },
   ],
-  // 出席登记:腾讯文档收集表链接
-  // ★ 在腾讯文档创建收集表(字段建议:姓名/出席人数/同行人/手机号选填),
-  //   复制链接填到下方引号里即可生效
+  // 云开发环境 ID:在腾讯云开发控制台创建环境后获取(见 README「云端数据」一节)
+  // 留空 = 降级模式:出席登记跳转腾讯文档、留言存本机、座位用下方示例名单
+  cloudbaseEnv: '',
+  // 出席登记:腾讯文档收集表链接(仅在未配置 cloudbaseEnv 的降级模式下使用)
   rsvpUrl: 'https://docs.qq.com/form/page/DREp3TmpLTWNEb1NM',
   // 座位名单(当前为示例占位,排好真实名单后替换这里;格式 { name: '姓名', table: '桌号' })
   seats: [
@@ -99,17 +100,17 @@ const CONFIG = {
   // 首页背景图(想换就改这里,填 images/ 下的任意照片路径)
   coverImage: 'images/wedding/5/w45.jpg',
   // 婚纱照相册:按造型分组,每组一个文件夹
-  // 格式: { title: '分组标题', dir: '图片文件夹', photos: ['文件名1', '文件名2', …] }
+  // 格式: { cover: '封面图文件名', dir: '图片文件夹', photos: ['文件名1', …] }
   // ★ 你调整文件夹里的照片后,告诉我一声,我重新扫描生成这里的列表。
   albums: [
-    { title: '珠帘绣幕蔼祥烟,<br>合卺嘉盟缔百年', dir: 'images/wedding/1/', photos: ['w01.jpg', 'w02.jpg', 'w03.jpg', 'w04.jpg', 'w05.jpg', 'w06.jpg', 'w07.jpg', 'w08.jpg', 'w09.jpg'] },
-    { title: '琴瑟在御,<br>莫不静好', dir: 'images/wedding/2/', photos: ['w10.jpg', 'w11.jpg', 'w12.jpg', 'w13.jpg', 'w14.jpg', 'w15.jpg', 'w16.jpg', 'w17.jpg', 'w18.jpg', 'w19.jpg', 'w20.jpg'] },
-    { title: '良缘由夙缔,<br>佳偶自天成', dir: 'images/wedding/3/', photos: ['w21.jpg', 'w22.jpg', 'w23.jpg', 'w24.jpg', 'w25.jpg', 'w26.jpg', 'w27.jpg', 'w28.jpg'] },
-    { title: '得成比目何辞死,<br>愿作鸳鸯不羡仙', dir: 'images/wedding/4/', photos: ['w29.jpg', 'w30.jpg', 'w31.jpg', 'w32.jpg', 'w33.jpg', 'w34.jpg', 'w35.jpg', 'w36.jpg', 'w37.jpg', 'w38.jpg', 'w39.jpg'] },
-    { title: '在天愿作比翼鸟,<br>在地愿为连理枝', dir: 'images/wedding/5/', photos: ['w40.jpg', 'w41.jpg', 'w42.jpg', 'w43.jpg', 'w44.jpg', 'w45.jpg', 'w46.jpg', 'w47.jpg', 'w48.jpg', 'w49.jpg', 'w50.jpg', 'w51.jpg', 'w52.jpg', 'w53.jpg', 'w54.jpg', 'w55.jpg', 'w56.jpg', 'w57.jpg', 'w58.jpg'] },
+    { cover: 'first.jpg', dir: 'images/wedding/5/', photos: ['w40.jpg', 'w41.jpg', 'w42.jpg', 'w43.jpg', 'w44.jpg', 'w45.jpg', 'w46.jpg', 'w47.jpg', 'w48.jpg', 'w49.jpg', 'w50.jpg', 'w51.jpg', 'w52.jpg', 'w53.jpg', 'w54.jpg', 'w55.jpg', 'w57.jpg', 'w58.jpg'] },
+    { cover: 'first.jpg', dir: 'images/wedding/1/', photos: ['w01.jpg', 'w02.jpg', 'w03.jpg', 'w04.jpg', 'w05.jpg', 'w06.jpg', 'w08.jpg', 'w09.jpg'] },
+    { cover: 'first.jpg', dir: 'images/wedding/2/', photos: ['w10.jpg', 'w11.jpg', 'w12.jpg', 'w13.jpg', 'w14.jpg', 'w15.jpg', 'w16.jpg', 'w17.jpg', 'w18.jpg', 'w19.jpg'] },
+    { cover: 'first.jpg', dir: 'images/wedding/3/', photos: ['w21.jpg', 'w22.jpg', 'w23.jpg', 'w24.jpg', 'w25.jpg', 'w26.jpg', 'w28.jpg'] },
+    { cover: 'first.jpg', dir: 'images/wedding/4/', photos: ['w29.jpg', 'w30.jpg', 'w31.jpg', 'w32.jpg', 'w33.jpg', 'w34.jpg', 'w35.jpg', 'w36.jpg', 'w38.jpg', 'w39.jpg'] },
   ],
-  // 背景音乐:将文件放到 music/bgm.mp3 即可生效(见 music/README.txt)
-  musicSrc: 'music/bgm.mp3',
+  // 背景音乐:文件放到 music/ 目录后,把文件名填到这里(见 music/README.txt)
+  musicSrc: 'music/prank_wanglanyin.mp3',
 };
 /* ============================================================
    ★ 配置区结束
@@ -132,9 +133,36 @@ const HOTEL_PHOTOS = [
   { dir: 'images/hotel/', file: 'hotel-2.jpg', title: '酒店环境' },
 ];
 const ALL_PHOTOS = CONFIG.albums
-  .flatMap((al) => al.photos.map((p) => ({ dir: al.dir, file: p, title: al.title })))
+  .flatMap((al) => [{ dir: al.dir, file: al.cover }]
+    .concat(al.photos.map((p) => ({ dir: al.dir, file: p }))))
   .concat(HOTEL_PHOTOS);
 let openLightbox; // 由下方放大层模块赋值
+
+/* ============================================================
+   云开发初始化:登记 / 座位 / 留言的数据能力
+   未配置 CONFIG.cloudbaseEnv 或 SDK 未加载时,cloudReady = false,
+   各功能自动降级(跳转腾讯文档 / 本地存储 / 内置示例名单)
+   ============================================================ */
+let cloud = null;
+let cloudReady = false;
+(function initCloud() {
+  if (!CONFIG.cloudbaseEnv) return;
+  if (typeof cloudbase === 'undefined') {
+    console.warn('[婚礼请柬] CloudBase SDK 未加载,使用降级模式');
+    return;
+  }
+  try {
+    const app = cloudbase.init({ env: CONFIG.cloudbaseEnv });
+    const auth = app.auth({ persistence: 'local' });
+    const db = app.database();
+    cloud = { app, db };
+    // 匿名登录(游客身份即可读写;失败不阻塞,由集合安全规则兜底)
+    auth.anonymousAuthProvider().signIn().catch(() => {});
+    cloudReady = true;
+  } catch (e) {
+    console.warn('[婚礼请柬] 云开发初始化失败,使用降级模式', e);
+  }
+})();
 
 /* ============================================================
    首页与页面信息渲染
@@ -184,8 +212,42 @@ let openLightbox; // 由下方放大层模块赋值
   const env = $('#envelope');
   const card = $('#letter-card');
 
+  // 拆封音效:Web Audio 实时合成铃铛般的一声"叮",无需音频文件
+  function playChime() {
+    try {
+      const Ctx = window.AudioContext || window.webkitAudioContext;
+      const ctx = new Ctx();
+      const now = ctx.currentTime;
+      // 主音:G6 滑向 C7,快速衰减
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(1568, now);
+      osc.frequency.linearRampToValueAtTime(2093, now + 0.08);
+      gain.gain.setValueAtTime(0.0001, now);
+      gain.gain.exponentialRampToValueAtTime(0.28, now + 0.02);
+      gain.gain.exponentialRampToValueAtTime(0.0001, now + 1.4);
+      osc.connect(gain).connect(ctx.destination);
+      osc.start(now);
+      osc.stop(now + 1.5);
+      // 泛音:更高更轻,营造铃声质感
+      const osc2 = ctx.createOscillator();
+      const gain2 = ctx.createGain();
+      osc2.type = 'triangle';
+      osc2.frequency.setValueAtTime(3136, now + 0.02);
+      gain2.gain.setValueAtTime(0.0001, now + 0.02);
+      gain2.gain.exponentialRampToValueAtTime(0.1, now + 0.06);
+      gain2.gain.exponentialRampToValueAtTime(0.0001, now + 0.9);
+      osc2.connect(gain2).connect(ctx.destination);
+      osc2.start(now + 0.02);
+      osc2.stop(now + 1);
+      setTimeout(() => ctx.close(), 1600);
+    } catch (e) { /* 不支持 Web Audio 则静默 */ }
+  }
+
   env.addEventListener('click', () => {
     if (env.classList.contains('opened')) return;
+    playChime();
     env.classList.add('opened');
     setTimeout(() => { card.hidden = false; }, 900);
   });
@@ -194,6 +256,8 @@ let openLightbox; // 由下方放大层模块赋值
     sessionStorage.setItem('env-opened', '1');
     card.hidden = true;
     scene.classList.add('done');
+    // 收起信纸后平滑回到首页顶部
+    window.scrollTo({ top: 0, behavior: 'smooth' });
     setTimeout(() => scene.remove(), 650);
   });
 })();
@@ -207,14 +271,27 @@ let openLightbox; // 由下方放大层模块赋值
     const group = document.createElement('div');
     group.className = 'album-group';
 
-    const head = document.createElement('div');
-    head.className = 'album-head';
-    head.innerHTML = `
-      <h3 class="album-title">${al.title}</h3>
-      <span class="album-count">${al.photos.length} 张</span>
-      <span class="album-line"></span>`;
-    group.appendChild(head);
+    // 封面大卡:first.jpg,竖版图自适应 3:4 比例展示
+    const cover = document.createElement('div');
+    cover.className = 'album-cover';
+    cover.addEventListener('click', () =>
+      openLightbox(ALL_PHOTOS.findIndex((p) => p.dir === al.dir && p.file === al.cover)));
+    const coverImg = document.createElement('img');
+    coverImg.src = al.dir + al.cover;
+    coverImg.alt = '婚纱照封面';
+    coverImg.loading = 'lazy';
+    coverImg.addEventListener('load', () => {
+      if (coverImg.naturalWidth < coverImg.naturalHeight) cover.classList.add('portrait');
+    }, { once: true });
+    const shade = document.createElement('div');
+    shade.className = 'album-cover-shade';
+    const coverCount = document.createElement('span');
+    coverCount.className = 'album-cover-count';
+    coverCount.textContent = `${al.photos.length + 1} 张`;
+    cover.append(coverImg, shade, coverCount);
+    group.appendChild(cover);
 
+    // 其余照片网格
     const grid = document.createElement('div');
     grid.className = 'album-grid';
     al.photos.forEach((file, i) => {
@@ -222,7 +299,7 @@ let openLightbox; // 由下方放大层模块赋值
       img.className = 'photo-item';
       img.loading = 'lazy';
       img.src = al.dir + file;
-      img.alt = `${al.title.replace(/<br>/g, '')} ${i + 1}`;
+      img.alt = `婚纱照 ${i + 1}`;
       img.addEventListener('click', () => openLightbox(ALL_PHOTOS.findIndex((p) => p.dir === al.dir && p.file === file)));
       grid.appendChild(img);
     });
@@ -253,6 +330,12 @@ let openLightbox; // 由下方放大层模块赋值
   function close() {
     box.hidden = true;
     document.body.style.overflow = '';
+    // 关闭时若处于全屏状态则退出全屏
+    if (document.fullscreenElement || document.webkitFullscreenElement) {
+      try {
+        (document.exitFullscreen || document.webkitExitFullscreen).call(document);
+      } catch (e) { /* 忽略 */ }
+    }
   }
   function step(delta) { show(index + delta); }
 
@@ -260,12 +343,30 @@ let openLightbox; // 由下方放大层模块赋值
   $('#lightbox-close').addEventListener('click', close);
   $('#lightbox-prev').addEventListener('click', () => step(-1));
   $('#lightbox-next').addEventListener('click', () => step(1));
+
+  // 全屏模式按钮(不支持的浏览器如微信内置 WebView 自动隐藏)
+  const fullBtn = $('#lightbox-full');
+  if (box.requestFullscreen || box.webkitRequestFullscreen) {
+    fullBtn.addEventListener('click', () => {
+      try {
+        if (document.fullscreenElement || document.webkitFullscreenElement) {
+          (document.exitFullscreen || document.webkitExitFullscreen).call(document);
+        } else {
+          (box.requestFullscreen || box.webkitRequestFullscreen).call(box);
+        }
+      } catch (e) { /* 忽略 */ }
+    });
+  } else {
+    fullBtn.hidden = true;
+  }
+
   box.addEventListener('click', (e) => { if (e.target === box) close(); });
   document.addEventListener('keydown', (e) => {
     if (box.hidden) return;
     if (e.key === 'Escape') close();
     if (e.key === 'ArrowLeft') step(-1);
     if (e.key === 'ArrowRight') step(1);
+    if (e.key === 'f' || e.key === 'F') fullBtn.click();
   });
   box.addEventListener('touchstart', (e) => {
     startX = e.touches[0].clientX;
@@ -274,7 +375,8 @@ let openLightbox; // 由下方放大层模块赋值
   box.addEventListener('touchend', (e) => {
     const dx = e.changedTouches[0].clientX - startX;
     const dy = e.changedTouches[0].clientY - startY;
-    if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy)) step(dx < 0 ? 1 : -1);
+    // 横向滑动超过 40px 且明显大于纵向时切换照片
+    if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy) * 1.4) step(dx < 0 ? 1 : -1);
   }, { passive: true });
 
   // 酒店照片也走放大层(排在相册照片之后)
@@ -330,24 +432,91 @@ let openLightbox; // 由下方放大层模块赋值
    ============================================================ */
 (function rsvp() {
   const btn = $('#rsvp-btn');
-  if (CONFIG.rsvpUrl) {
-    btn.href = CONFIG.rsvpUrl;
-  } else {
-    btn.addEventListener('click', (e) => {
-      e.preventDefault();
-      alert('出席登记链接尚未配置\n请在 js/main.js 的 CONFIG.rsvpUrl 填入腾讯文档收集表链接');
-    });
+  const form = $('#rsvp-form');
+  const done = $('#rsvp-done');
+  const submitBtn = form.querySelector('button');
+
+  // 降级模式:保持跳转腾讯文档收集表
+  if (!cloudReady) {
+    if (CONFIG.rsvpUrl) {
+      btn.href = CONFIG.rsvpUrl;
+    } else {
+      btn.addEventListener('click', (e) => {
+        e.preventDefault();
+        alert('出席登记链接尚未配置\n请在 js/main.js 的 CONFIG.rsvpUrl 填入腾讯文档收集表链接');
+      });
+    }
+    return;
   }
+
+  // 云端模式:页内表单
+  btn.hidden = true;
+  form.hidden = false;
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const name = $('#rsvp-name').value.trim();
+    if (!name) return;
+    const data = {
+      name,
+      count: $('#rsvp-count').value.trim(),
+      phone: $('#rsvp-phone').value.trim(),
+      note: $('#rsvp-note').value.trim(),
+      updatedAt: new Date().toISOString(),
+    };
+    submitBtn.disabled = true;
+    submitBtn.textContent = '提交中…';
+    try {
+      const col = cloud.db.collection('rsvp');
+      const exist = await col.where({ name }).limit(1).get();
+      if (exist.data && exist.data.length) {
+        await col.doc(exist.data[0]._id).update(data); // 同名覆盖
+      } else {
+        await col.add(data);
+      }
+      form.reset();
+      done.hidden = false;
+      submitBtn.textContent = '提交登记';
+      setTimeout(() => { done.hidden = true; }, 4000);
+    } catch (err) {
+      console.warn('[婚礼请柬] 出席登记提交失败', err);
+      alert('提交失败,请稍后重试,或直接联系新人');
+      submitBtn.textContent = '提交登记';
+    } finally {
+      submitBtn.disabled = false;
+    }
+  });
 })();
 
 (function seatQuery() {
   const input = $('#seat-input');
   const result = $('#seat-result');
-  function query() {
+
+  // 云端 seats 集合查询:先精确匹配,再模糊匹配
+  async function cloudQuery(name) {
+    const db = cloud.db;
+    const exact = await db.collection('seats').where({ name }).limit(1).get();
+    if (exact.data && exact.data.length) return exact.data[0];
+    const fuzzy = await db.collection('seats')
+      .where({ name: db.RegExp({ regexp: name, options: '' }) }).limit(10).get();
+    if (fuzzy.data && fuzzy.data.length) return fuzzy.data[0];
+    return null;
+  }
+
+  async function query() {
     const name = input.value.trim();
     if (!name) { result.hidden = true; return; }
-    const hit = CONFIG.seats.find((s) => s.name === name)
-      || CONFIG.seats.find((s) => s.name.includes(name));
+    let hit = null;
+    if (cloudReady) {
+      try {
+        hit = await cloudQuery(name);
+      } catch (e) {
+        console.warn('[婚礼请柬] 云端座位查询失败,使用内置名单', e);
+      }
+    }
+    if (!hit) {
+      hit = CONFIG.seats.find((s) => s.name === name)
+        || CONFIG.seats.find((s) => s.name.includes(name));
+    }
     result.hidden = false;
     if (hit) {
       result.className = 'seat-result found';
@@ -500,15 +669,16 @@ let openLightbox; // 由下方放大层模块赋值
   const KEY = 'wedding-wishes-v1';
   const form = $('#wish-form');
   const list = $('#wish-list');
-  let data = [];
+  let data = []; // 新→旧排列
 
-  try {
-    data = JSON.parse(localStorage.getItem(KEY)) || [];
-  } catch (e) {
-    data = [];
+  function localLoad() {
+    try {
+      return JSON.parse(localStorage.getItem(KEY)) || [];
+    } catch (e) {
+      return [];
+    }
   }
-
-  function save() {
+  function localSave() {
     localStorage.setItem(KEY, JSON.stringify(data));
   }
 
@@ -521,7 +691,7 @@ let openLightbox; // 由下方放大层模块赋值
       list.appendChild(li);
       return;
     }
-    data.slice().reverse().forEach((w) => {
+    data.forEach((w) => {
       const li = document.createElement('li');
       li.className = 'wish-item';
       const avatar = document.createElement('span');
@@ -547,21 +717,76 @@ let openLightbox; // 由下方放大层模块赋值
     });
   }
 
-  form.addEventListener('submit', (e) => {
+  // 云端模式:拉取共享留言墙;失败回退本地
+  async function load() {
+    if (cloudReady) {
+      try {
+        const res = await cloud.db.collection('wishes').orderBy('time', 'desc').limit(100).get();
+        data = (res.data || []).map((d) => ({ name: d.name, text: d.text, time: d.time }));
+      } catch (e) {
+        console.warn('[婚礼请柬] 云端留言读取失败,回退本地', e);
+        data = localLoad();
+      }
+    } else {
+      data = localLoad();
+    }
+    render();
+  }
+
+  form.addEventListener('submit', async (e) => {
     e.preventDefault();
     const name = $('#wish-name').value.trim();
     const text = $('#wish-text').value.trim();
     if (!text) return;
     const now = new Date();
-    data.push({
+    const item = {
       name,
       text,
       time: `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())} ${pad(now.getHours())}:${pad(now.getMinutes())}`,
-    });
-    save();
+    };
+    if (cloudReady) {
+      try {
+        await cloud.db.collection('wishes').add(item);
+      } catch (err) {
+        console.warn('[婚礼请柬] 留言提交失败', err);
+        alert('留言失败,请稍后重试');
+        return;
+      }
+    }
+    data.unshift(item);
+    localSave();
     render();
     $('#wish-text').value = '';
   });
 
-  render();
+  load();
+})();
+
+/* ============================================================
+   滚动渐入动画:板块进入视口时优雅浮现
+   (IntersectionObserver 自实现,零依赖,优于引入 AOS/GSAP:
+    不依赖境外 CDN,不增加页面体积,微信内加载更稳)
+   ============================================================ */
+(function scrollReveal() {
+  // .reveal 类由 JS 添加:即使脚本异常,内容也不会因初始 opacity:0 而消失
+  const targets = document.querySelectorAll(
+    '.sec-head, .timeline, .travel-list, .hotel-photos, .hotel-btns, .wish-form, .wish-list, .guide-block, .album-group, .footer'
+  );
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (reduce || !('IntersectionObserver' in window)) {
+    targets.forEach((el) => el.classList.add('revealed'));
+    return;
+  }
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach((en) => {
+      if (en.isIntersecting) {
+        en.target.classList.add('revealed');
+        io.unobserve(en.target);
+      }
+    });
+  }, { threshold: 0.08, rootMargin: '0px 0px -6% 0px' });
+  targets.forEach((el) => {
+    el.classList.add('reveal');
+    io.observe(el);
+  });
 })();
