@@ -424,7 +424,7 @@ body::before {
   letter-spacing: .08em;
 }
 
-/* ---------- 首页(照片背景 + 子项目入口) ---------- */
+/* ---------- 首页(莫奈花园主题:睡莲池印象) ---------- */
 .hero {
   min-height: 100vh;
   min-height: 100svh;
@@ -438,17 +438,32 @@ body::before {
 .hero-bg {
   position: absolute;
   inset: 0;
-  /* 背景图由 js/main.js 的 CONFIG.coverImage 设置 */
-  background: center / cover no-repeat, linear-gradient(160deg, #A8B89A, #E3CCD0 45%, #CFC3DE);
-  transform: scale(1.03);
-  opacity: 0;
-  transition: opacity 1.2s ease;
+  background:
+    radial-gradient(ellipse 800px 500px at 15% 20%, rgba(200, 230, 201, 0.4), transparent 65%),
+    radial-gradient(ellipse 700px 600px at 85% 75%, rgba(245, 230, 237, 0.45), transparent 68%),
+    radial-gradient(ellipse 600px 400px at 50% 50%, rgba(184, 212, 232, 0.35), transparent 60%),
+    linear-gradient(165deg, #E8F4F8 0%, #D4EDE4 35%, #F5E6ED 70%, #E8F4F8 100%);
 }
-.hero-bg.loaded { opacity: 1; }
+.hero-bg::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle 180px at 25% 15%, rgba(143, 168, 133, 0.08), transparent),
+    radial-gradient(circle 220px at 75% 80%, rgba(143, 168, 133, 0.06), transparent),
+    radial-gradient(circle 140px at 60% 40%, rgba(184, 212, 232, 0.1), transparent);
+  animation: ripple 18s ease-in-out infinite;
+}
+@keyframes ripple {
+  0%, 100% { opacity: 0.6; transform: scale(1) translate(0, 0); }
+  33% { opacity: 0.8; transform: scale(1.08) translate(2%, -1%); }
+  66% { opacity: 0.5; transform: scale(0.95) translate(-1%, 2%); }
+}
 .hero-shade {
   position: absolute;
   inset: 0;
-  background: linear-gradient(to bottom, rgba(60, 58, 52, .38), rgba(60, 58, 52, .12) 30%, rgba(60, 58, 52, .18) 68%, rgba(60, 58, 52, .55));
+  background: linear-gradient(to bottom, rgba(143, 168, 133, .06), transparent 40%, rgba(143, 168, 133, .04) 75%, rgba(143, 168, 133, .12));
+  pointer-events: none;
 }
 .hero-inner {
   position: relative;
@@ -456,16 +471,17 @@ body::before {
   text-align: center;
   max-width: 560px;
   width: 100%;
-  color: #FFFDF8;
-  text-shadow: 0 2px 12px rgba(40, 38, 32, .45);
+  color: #2C4A3E;
+  text-shadow: 0 1px 3px rgba(255, 255, 255, .6);
 }
 .hero-en {
   font-family: Georgia, serif;
   font-size: 12px;
   letter-spacing: .5em;
   text-indent: .5em;
-  opacity: .94;
+  opacity: .7;
   margin-bottom: 20px;
+  color: #5A7B6A;
 }
 .hero-title {
   font-family: var(--serif);
@@ -478,22 +494,24 @@ body::before {
   display: inline-block;
   font-family: Georgia, serif;
   font-size: .62em;
-  color: #F5D9D9;
+  color: #8FA885;
   vertical-align: middle;
   padding: 0 6px;
 }
 .hero-sub {
   font-size: 14px;
   letter-spacing: .22em;
-  opacity: .92;
+  opacity: .8;
   margin-bottom: 10px;
+  color: #4A6B5A;
 }
 .hero-date {
   font-family: var(--serif);
   font-size: 16px;
   letter-spacing: .12em;
-  opacity: .95;
+  opacity: .85;
   margin-bottom: 22px;
+  color: #3E5D4E;
 }
 .countdown {
   display: flex;
@@ -505,21 +523,24 @@ body::before {
   width: 58px;
   padding: 8px 0 7px;
   border-radius: 12px;
-  background: rgba(251, 247, 240, .18);
-  border: 1px solid rgba(255, 253, 248, .35);
+  background: rgba(255, 255, 255, .85);
+  border: 1px solid rgba(143, 168, 133, .25);
   backdrop-filter: blur(6px);
+  box-shadow: 0 2px 8px rgba(143, 168, 133, .1);
 }
 .cd-item span {
   display: block;
   font-family: Georgia, "Times New Roman", serif;
   font-size: 22px;
   line-height: 1.2;
+  color: #2C4A3E;
 }
 .cd-item em {
   font-style: normal;
   font-size: 11px;
   letter-spacing: .2em;
-  opacity: .85;
+  opacity: .7;
+  color: #5A7B6A;
 }
 .hero-menu {
   display: flex;
@@ -534,17 +555,20 @@ body::before {
   gap: 14px;
   padding: 12px 18px;
   border-radius: 14px;
-  background: rgba(251, 247, 240, .18);
-  border: 1px solid rgba(255, 253, 248, .35);
+  background: rgba(255, 255, 255, .75);
+  border: 1px solid rgba(143, 168, 133, .2);
   backdrop-filter: blur(8px);
-  color: #FFFDF8;
+  color: #2C4A3E;
   text-decoration: none;
-  text-shadow: 0 1px 8px rgba(40, 38, 32, .4);
-  transition: background .3s, transform .3s;
+  text-shadow: 0 1px 2px rgba(255, 255, 255, .5);
+  transition: all .3s;
+  box-shadow: 0 1px 6px rgba(143, 168, 133, .08);
 }
 .hero-entry:hover {
-  background: rgba(251, 247, 240, .3);
+  background: rgba(255, 255, 255, .9);
   transform: translateX(4px);
+  box-shadow: 0 2px 12px rgba(143, 168, 133, .15);
+  border-color: rgba(143, 168, 133, .35);
 }
 .he-icon { font-size: 18px; width: 26px; text-align: center; }
 .he-title {
@@ -554,76 +578,114 @@ body::before {
   font-weight: 600;
   letter-spacing: .16em;
 }
-.he-arrow { font-size: 20px; opacity: .8; }
+.he-arrow { font-size: 20px; opacity: .6; }
 .hero-venue {
   font-size: 12.5px;
   letter-spacing: .14em;
-  opacity: .85;
+  opacity: .7;
+  color: #5A7B6A;
 }
 
-/* ---------- 婚纱照分组网格相册 ---------- */
-.album-group { margin-bottom: 44px; }
-.album-cover {
+/* ---------- 婚纱照横向滚动照片墙(五行) ---------- */
+.album-groups {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin: 0 -22px; /* 让照片墙延伸到屏幕边缘 */
+}
+
+.photo-wall-row {
   position: relative;
-  border-radius: 16px;
+  width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  cursor: grab;
+  /* 隐藏滚动条 */
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.photo-wall-row::-webkit-scrollbar {
+  display: none;
+}
+
+.photo-wall-row:active {
+  cursor: grabbing;
+}
+
+.photo-wall-track {
+  display: flex;
+  gap: 14px;
+  width: fit-content;
+  animation: scroll-left 80s linear infinite;
+}
+
+/* 奇数行向左滚动，偶数行向右滚动，速度略有差异 */
+.photo-wall-row[data-row="0"] .photo-wall-track { animation: scroll-left 90s linear infinite; }
+.photo-wall-row[data-row="1"] .photo-wall-track { animation: scroll-right 85s linear infinite; }
+.photo-wall-row[data-row="2"] .photo-wall-track { animation: scroll-left 95s linear infinite; }
+.photo-wall-row[data-row="3"] .photo-wall-track { animation: scroll-right 88s linear infinite; }
+.photo-wall-row[data-row="4"] .photo-wall-track { animation: scroll-left 92s linear infinite; }
+
+@keyframes scroll-left {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+@keyframes scroll-right {
+  from { transform: translateX(-50%); }
+  to { transform: translateX(0); }
+}
+
+.photo-wall-item {
+  flex: 0 0 auto;
+  height: 240px;
+  border-radius: 12px;
   overflow: hidden;
-  cursor: zoom-in;
-  box-shadow: 0 10px 30px rgba(92, 91, 82, .16);
-  border: 1px solid rgba(156, 175, 136, .4);
-  margin-bottom: 14px;
-  transition: transform .3s, box-shadow .3s;
-}
-.album-cover:hover { transform: translateY(-3px); box-shadow: 0 14px 36px rgba(92, 91, 82, .2); }
-.album-cover img {
-  display: block;
-  width: 100%;
-  aspect-ratio: 16 / 9;
-  object-fit: cover;
-}
-/* 竖版封面图自适应 3:4,避免裁切 */
-.album-cover.portrait img { aspect-ratio: 3 / 4; }
-.album-cover-shade {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(to top, rgba(60, 58, 52, .35), rgba(60, 58, 52, 0) 40%);
-}
-.album-cover-count {
-  position: absolute;
-  top: 10px;
-  right: 12px;
-  z-index: 2;
-  font-size: 11.5px;
-  letter-spacing: .06em;
-  color: #FFFDF8;
-  background: rgba(60, 58, 52, .42);
-  border-radius: 12px;
-  padding: 3px 10px;
-  backdrop-filter: blur(4px);
-}
-.album-grid {
-  columns: 2;
-  column-gap: 12px;
-}
-.album-grid .photo-item {
-  display: block;
-  width: 100%;
-  margin-bottom: 12px;
-  border-radius: 12px;
-  cursor: zoom-in;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(92, 91, 82, .12);
   border: 1px solid rgba(156, 175, 136, .35);
-  box-shadow: 0 4px 14px rgba(92, 91, 82, .1);
   transition: transform .3s, box-shadow .3s;
-  break-inside: avoid;
   background: rgba(251, 247, 240, .5);
-  min-height: 60px;
+  user-select: none;
+  -webkit-user-select: none;
 }
-.album-grid .photo-item:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 10px 24px rgba(92, 91, 82, .16);
+
+.photo-wall-item:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 24px rgba(92, 91, 82, .2);
+  z-index: 2;
 }
-@media (min-width: 720px) {
-  .album-grid { columns: 3; column-gap: 14px; }
-  .album-grid .photo-item { margin-bottom: 14px; }
+
+.photo-wall-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  pointer-events: none;
+  -webkit-user-drag: none;
+  user-select: none;
+}
+
+/* 响应式调整照片墙高度 */
+@media (max-width: 560px) {
+  .photo-wall-item {
+    height: 180px;
+  }
+  .album-groups {
+    gap: 12px;
+    margin: 0 -16px;
+  }
+  .photo-wall-track {
+    gap: 10px;
+  }
+}
+
+/* 用户设置了减少动画时，停止滚动 */
+@media (prefers-reduced-motion: reduce) {
+  .photo-wall-track {
+    animation: none !important;
+  }
 }
 
 /* ---------- 流程时间轴 ---------- */
@@ -1225,8 +1287,24 @@ body::before {
   opacity: 1;
   transform: none;
 }
+/* 照片墙行淡入(依次渐入) */
+.photo-wall-row {
+  opacity: 0;
+  transform: translateX(-20px);
+  transition: opacity .6s ease, transform .6s ease;
+}
+.photo-wall-row.revealed {
+  opacity: 1;
+  transform: translateX(0);
+}
+.photo-wall-row[data-row="0"] { transition-delay: 0s; }
+.photo-wall-row[data-row="1"] { transition-delay: .1s; }
+.photo-wall-row[data-row="2"] { transition-delay: .2s; }
+.photo-wall-row[data-row="3"] { transition-delay: .3s; }
+.photo-wall-row[data-row="4"] { transition-delay: .4s; }
 @media (prefers-reduced-motion: reduce) {
   .reveal { opacity: 1; transform: none; transition: none; }
+  .photo-wall-row { opacity: 1; transform: none; transition: none; }
 }
 
 /* ---------- 响应式 ---------- */

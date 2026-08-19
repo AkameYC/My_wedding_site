@@ -97,17 +97,14 @@ const CONFIG = {
       { name: '佳缘时令水果拼', note: '寓意:佳偶良缘' },
     ]},
   ],
-  // 首页背景图(想换就改这里,填 images/ 下的任意照片路径)
-  coverImage: 'images/wedding/5/w45.jpg',
   // 婚纱照相册:按造型分组,每组一个文件夹
   // 格式: { cover: '封面图文件名', dir: '图片文件夹', photos: ['文件名1', …] }
-  // ★ 你调整文件夹里的照片后,告诉我一声,我重新扫描生成这里的列表。
   albums: [
-    { cover: 'first.jpg', dir: 'images/wedding/5/', photos: ['w40.jpg', 'w41.jpg', 'w42.jpg', 'w43.jpg', 'w44.jpg', 'w45.jpg', 'w46.jpg', 'w47.jpg', 'w48.jpg', 'w49.jpg', 'w50.jpg', 'w51.jpg', 'w52.jpg', 'w53.jpg', 'w54.jpg', 'w55.jpg', 'w57.jpg', 'w58.jpg'] },
     { cover: 'first.jpg', dir: 'images/wedding/1/', photos: ['w01.jpg', 'w02.jpg', 'w03.jpg', 'w04.jpg', 'w05.jpg', 'w06.jpg', 'w08.jpg', 'w09.jpg'] },
     { cover: 'first.jpg', dir: 'images/wedding/2/', photos: ['w10.jpg', 'w11.jpg', 'w12.jpg', 'w13.jpg', 'w14.jpg', 'w15.jpg', 'w16.jpg', 'w17.jpg', 'w18.jpg', 'w19.jpg'] },
     { cover: 'first.jpg', dir: 'images/wedding/3/', photos: ['w21.jpg', 'w22.jpg', 'w23.jpg', 'w24.jpg', 'w25.jpg', 'w26.jpg', 'w28.jpg'] },
     { cover: 'first.jpg', dir: 'images/wedding/4/', photos: ['w29.jpg', 'w30.jpg', 'w31.jpg', 'w32.jpg', 'w33.jpg', 'w34.jpg', 'w35.jpg', 'w36.jpg', 'w38.jpg', 'w39.jpg'] },
+    { cover: 'first.jpg', dir: 'images/wedding/5/', photos: ['w40.jpg', 'w41.jpg', 'w42.jpg', 'w43.jpg', 'w44.jpg', 'w45.jpg', 'w46.jpg', 'w47.jpg', 'w48.jpg', 'w49.jpg', 'w50.jpg', 'w51.jpg', 'w52.jpg', 'w53.jpg', 'w54.jpg', 'w55.jpg', 'w57.jpg', 'w58.jpg'] },
   ],
   // 背景音乐:文件放到 music/ 目录后,把文件名填到这里(见 music/README.txt)
   musicSrc: 'music/prank_wanglanyin.mp3',
@@ -171,13 +168,6 @@ let cloudReady = false;
   const d = new Date(CONFIG.weddingDate);
   const week = ['日', '一', '二', '三', '四', '五', '六'][d.getDay()];
   const dateText = `${d.getFullYear()}年${d.getMonth() + 1}月${d.getDate()}日 · 星期${week} · ${pad(d.getHours())}:${pad(d.getMinutes())}`;
-
-  // 首页照片背景(加载完成后淡入)
-  const bg = document.querySelector('.hero-bg');
-  const img = new Image();
-  img.onload = () => bg.classList.add('loaded');
-  img.src = CONFIG.coverImage;
-  bg.style.backgroundImage = `url('${CONFIG.coverImage}')`;
 
   // 首页文字
   $('#h-groom').textContent = CONFIG.groom;
@@ -263,48 +253,123 @@ let cloudReady = false;
 })();
 
 /* ============================================================
-   婚纱照分组网格相册
+   婚纱照横向滚动照片墙（五行自动滚动，每行对应一个文件夹）
+   支持：短按放大、长按拖动
    ============================================================ */
 (function renderAlbums() {
   const wrap = $('#album-groups');
-  CONFIG.albums.forEach((al) => {
-    const group = document.createElement('div');
-    group.className = 'album-group';
 
-    // 封面大卡:first.jpg,竖版图自适应 3:4 比例展示
-    const cover = document.createElement('div');
-    cover.className = 'album-cover';
-    cover.addEventListener('click', () =>
-      openLightbox(ALL_PHOTOS.findIndex((p) => p.dir === al.dir && p.file === al.cover)));
-    const coverImg = document.createElement('img');
-    coverImg.src = al.dir + al.cover;
-    coverImg.alt = '婚纱照封面';
-    coverImg.loading = 'lazy';
-    coverImg.addEventListener('load', () => {
-      if (coverImg.naturalWidth < coverImg.naturalHeight) cover.classList.add('portrait');
-    }, { once: true });
-    const shade = document.createElement('div');
-    shade.className = 'album-cover-shade';
-    const coverCount = document.createElement('span');
-    coverCount.className = 'album-cover-count';
-    coverCount.textContent = `${al.photos.length + 1} 张`;
-    cover.append(coverImg, shade, coverCount);
-    group.appendChild(cover);
+  // 创建五行照片墙，每行对应一个相册文件夹
+  CONFIG.albums.slice(0, 5).forEach((album, row) => {
+    const rowDiv = document.createElement('div');
+    rowDiv.className = 'photo-wall-row';
+    rowDiv.setAttribute('data-row', row);
 
-    // 其余照片网格
-    const grid = document.createElement('div');
-    grid.className = 'album-grid';
-    al.photos.forEach((file, i) => {
-      const img = document.createElement('img');
-      img.className = 'photo-item';
-      img.loading = 'lazy';
-      img.src = al.dir + file;
-      img.alt = `婚纱照 ${i + 1}`;
-      img.addEventListener('click', () => openLightbox(ALL_PHOTOS.findIndex((p) => p.dir === al.dir && p.file === file)));
-      grid.appendChild(img);
+    // 创建照片轨道（需要复制两遍实现无缝循环）
+    const track = document.createElement('div');
+    track.className = 'photo-wall-track';
+
+    // 收集该相册的所有照片
+    const albumPhotos = [album.cover, ...album.photos].map((file) => ({
+      src: album.dir + file,
+      dir: album.dir,
+      file: file
+    }));
+
+    // 复制两次以实现无缝滚动
+    for (let copy = 0; copy < 2; copy++) {
+      albumPhotos.forEach((photo, i) => {
+        const item = document.createElement('div');
+        item.className = 'photo-wall-item';
+
+        const img = document.createElement('img');
+        img.src = photo.src;
+        img.alt = `婚纱照 ${row + 1}-${i + 1}`;
+        img.loading = 'lazy';
+        img.draggable = false;
+
+        item.appendChild(img);
+        track.appendChild(item);
+      });
+    }
+
+    // 交互逻辑：直接拖动或点击放大
+    let isDragging = false;
+    let startX = 0;
+    let scrollLeft = 0;
+    let hasMoved = false;
+    let clickedPhoto = null;
+
+    const onStart = (e) => {
+      const target = e.target.closest('.photo-wall-item');
+      if (!target) return;
+
+      hasMoved = false;
+      startX = (e.type === 'mousedown' ? e.pageX : e.touches[0].pageX) - rowDiv.offsetLeft;
+      scrollLeft = rowDiv.scrollLeft;
+      clickedPhoto = target.querySelector('img');
+
+      if (e.type === 'mousedown') {
+        document.addEventListener('mousemove', onMove);
+        document.addEventListener('mouseup', onEnd);
+      }
+    };
+
+    const onMove = (e) => {
+      const x = (e.type === 'mousemove' ? e.pageX : e.touches[0].pageX) - rowDiv.offsetLeft;
+      const walk = (x - startX) * 2;
+
+      if (Math.abs(walk) > 5) {
+        hasMoved = true;
+        if (!isDragging) {
+          isDragging = true;
+          rowDiv.style.cursor = 'grabbing';
+          track.style.animationPlayState = 'paused';
+        }
+      }
+
+      if (isDragging) {
+        e.preventDefault();
+        rowDiv.scrollLeft = scrollLeft - walk;
+      }
+    };
+
+    const onEnd = (e) => {
+      if (isDragging) {
+        isDragging = false;
+        rowDiv.style.cursor = '';
+        track.style.animationPlayState = '';
+      } else if (!hasMoved && clickedPhoto) {
+        // 点击未移动：放大照片
+        const photoSrc = clickedPhoto.src;
+        const photoIndex = ALL_PHOTOS.findIndex((p) =>
+          photoSrc.includes(p.dir) && photoSrc.includes(p.file)
+        );
+        if (photoIndex >= 0) {
+          openLightbox(photoIndex);
+        }
+      }
+
+      document.removeEventListener('mousemove', onMove);
+      document.removeEventListener('mouseup', onEnd);
+    };
+
+    // 绑定事件
+    rowDiv.addEventListener('mousedown', onStart);
+    rowDiv.addEventListener('touchstart', onStart, { passive: true });
+    rowDiv.addEventListener('touchmove', onMove, { passive: false });
+    rowDiv.addEventListener('touchend', onEnd);
+
+    // 鼠标悬停暂停滚动
+    rowDiv.addEventListener('mouseenter', () => {
+      if (!isDragging) track.style.animationPlayState = 'paused';
     });
-    group.appendChild(grid);
-    wrap.appendChild(group);
+    rowDiv.addEventListener('mouseleave', () => {
+      if (!isDragging) track.style.animationPlayState = '';
+    });
+
+    rowDiv.appendChild(track);
+    wrap.appendChild(rowDiv);
   });
 })();
 
@@ -770,7 +835,7 @@ let cloudReady = false;
 (function scrollReveal() {
   // .reveal 类由 JS 添加:即使脚本异常,内容也不会因初始 opacity:0 而消失
   const targets = document.querySelectorAll(
-    '.sec-head, .timeline, .travel-list, .hotel-photos, .hotel-btns, .wish-form, .wish-list, .guide-block, .album-group, .footer'
+    '.sec-head, .timeline, .travel-list, .hotel-photos, .hotel-btns, .wish-form, .wish-list, .guide-block, .footer, .photo-wall-row'
   );
   const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   if (reduce || !('IntersectionObserver' in window)) {
@@ -786,7 +851,9 @@ let cloudReady = false;
     });
   }, { threshold: 0.08, rootMargin: '0px 0px -6% 0px' });
   targets.forEach((el) => {
-    el.classList.add('reveal');
+    if (!el.classList.contains('photo-wall-row')) {
+      el.classList.add('reveal');
+    }
     io.observe(el);
   });
 })();
