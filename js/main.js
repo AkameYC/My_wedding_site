@@ -374,6 +374,79 @@ let cloudReady = false;
 })();
 
 /* ============================================================
+   流星雨效果（文件夹5的照片作为流星划过屏幕）
+   ============================================================ */
+(function meteorShower() {
+  if (!CONFIG.albums[4]) return;
+
+  const meteorContainer = document.createElement('div');
+  meteorContainer.className = 'meteor-shower';
+  meteorContainer.id = 'meteor-shower';
+  document.body.appendChild(meteorContainer);
+
+  const album5 = CONFIG.albums[4];
+  const meteor5Photos = [album5.cover, ...album5.photos].map((file) => ({
+    src: album5.dir + file,
+    dir: album5.dir,
+    file: file
+  }));
+
+  // 流星雨生成函数
+  function spawnMeteor() {
+    if (document.hidden || meteorContainer.childElementCount > 15) return;
+
+    const photo = meteor5Photos[Math.floor(Math.random() * meteor5Photos.length)];
+    const meteor = document.createElement('div');
+    meteor.className = 'meteor-photo';
+
+    const img = document.createElement('img');
+    img.src = photo.src;
+    img.alt = '婚纱照流星';
+    img.loading = 'lazy';
+    img.draggable = false;
+
+    meteor.appendChild(img);
+
+    // 随机位置和大小
+    const startY = -150 + Math.random() * 300;
+    const startX = Math.random() * 120;
+    const size = 80 + Math.random() * 60;
+    const duration = 15 + Math.random() * 10;
+    const delay = Math.random() * 5;
+
+    meteor.style.left = startX + 'vw';
+    meteor.style.top = startY + 'px';
+    meteor.style.width = size + 'px';
+    meteor.style.height = size + 'px';
+    meteor.style.animationDuration = duration + 's';
+    meteor.style.animationDelay = delay + 's';
+
+    // 点击放大
+    meteor.addEventListener('click', () => {
+      const photoIndex = ALL_PHOTOS.findIndex((p) =>
+        p.dir === photo.dir && p.file === photo.file
+      );
+      if (photoIndex >= 0) {
+        openLightbox(photoIndex);
+      }
+    });
+
+    // 动画结束后移除
+    meteor.addEventListener('animationend', () => meteor.remove());
+
+    meteorContainer.appendChild(meteor);
+  }
+
+  // 初始生成6个流星
+  for (let i = 0; i < 6; i++) {
+    setTimeout(() => spawnMeteor(), i * 1000);
+  }
+
+  // 每3秒生成一个新流星
+  setInterval(spawnMeteor, 3000);
+})();
+
+/* ============================================================
    图片放大查看(相册 + 酒店照片,支持左右切换/滑动/计数)
    ============================================================ */
 (function lightbox() {
